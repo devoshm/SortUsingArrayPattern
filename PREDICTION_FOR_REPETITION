@@ -18,9 +18,10 @@ public class CheckForRepetetion {
 		arraysize= InputSize.nextInt();
 		
 		DataGenerator dataGenerator = new DataGenerator(DataGenerator.PATTERN_REPEATED, arraysize);
-    System.out.println(dataGenerator.generate());
-    List<Integer> GetArray=dataGenerator.generate();
-    Integer[] TArr=GetArray.toArray(new Integer[GetArray.size()]);
+    
+    		List<Integer> GetArray=dataGenerator.generate();
+    		System.out.println(GetArray);
+    		Integer[] TArr=GetArray.toArray(new Integer[GetArray.size()]);
 		int length=TArr.length;
 		TestReps(TArr, length);
 	}
