@@ -20,7 +20,7 @@ public class CheckForRepetetion {
 		DataGenerator dataGenerator = new DataGenerator(DataGenerator.PATTERN_REPEATED, arraysize);
     
     		List<Integer> GetArray=dataGenerator.generate();
-    		System.out.println(GetArray);
+    		System.out.println(GetArray);                     //new
     		Integer[] TArr=GetArray.toArray(new Integer[GetArray.size()]);
 		int length=TArr.length;
 		TestReps(TArr, length);
