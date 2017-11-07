@@ -1,0 +1,66 @@
+package ArrayDataPrediction;
+
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+import GenerateData.DataGenerator;
+import GenerateData.Initiator;
+
+
+public class CheckForRepetetion {
+	public static void main(String[] args) {
+		int arraysize;	
+    
+		Scanner InputSize=new Scanner(System.in);
+		System.out.println("Enter the size of the array: ");
+		arraysize= InputSize.nextInt();
+		
+		DataGenerator dataGenerator = new DataGenerator(DataGenerator.PATTERN_REPEATED, arraysize);
+    System.out.println(dataGenerator.generate());
+    List<Integer> GetArray=dataGenerator.generate();
+    Integer[] TArr=GetArray.toArray(new Integer[GetArray.size()]);
+		int length=TArr.length;
+		TestReps(TArr, length);
+	}
+	
+
+	public static void TestReps(Integer TArr[],int size) {
+		
+		float Threshold;
+		float count=0;
+		float Percentage;
+		int length=size;
+		Scanner ThresholdInput= new Scanner(System.in);
+		System.out.print("Enter the threshold percentage:");
+		Threshold= ThresholdInput.nextFloat()/100;
+		
+		long begin = System.currentTimeMillis();
+		System.out.println("Threshold is set to : "+Threshold*100+"%");
+		System.out.println("Size of array :"+length);
+		
+		Set<Integer> mySet= new HashSet<Integer>();
+		
+		for(Integer ArrayElements: TArr) {
+			if (mySet.add(ArrayElements)==false) {
+				count++;				
+			}
+			
+		}
+		
+		Percentage=(count/length)*100;
+		
+		System.out.println("Total repetitions :"+count);
+		System.out.println("Percentage of repetitions: "+Percentage+"%");
+		
+		if(Percentage>Threshold*100) 
+			System.out.println("Array data type Prediction: REPEATED");
+		else
+			System.out.println("Array data type Prediction:NOT REPEATED");
+	long end=System.currentTimeMillis();
+	System.out.println("Time Taken(ms) : "+(end-begin)/1000+" seconds");
+		
+		
+	}
+}
