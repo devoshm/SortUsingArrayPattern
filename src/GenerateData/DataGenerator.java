@@ -1,83 +1,69 @@
 package GenerateData;
 
-import java.util.*;
+import Init.SortConstants;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class DataGenerator
 {
-    public static final int PATTERN_REPEATED = 0;
-    public static final int PATTERN_REVERSE = 1;
-    public static final int PATTERN_NEARLY_SORTED = 2;
-    public static final int PATTERN_RANDOM = 3;
-
     private static final int MAKE_DUPLICATE = 1;
     private static final int MAKE_SHUFFLE = 2;
 
-    private int arraySize;
-    private int patternType;
-    private Random random;
-    private int sizeSqrt;
-    private Integer[] generatedArray;
-
-    public DataGenerator(int patternType, int arraySize)
-    {
-        this.arraySize = arraySize;
-        this.patternType = patternType;
-        this.random = new Random();
-        this.sizeSqrt = (int) Math.sqrt(arraySize);
-    }
-
-    private void makeDuplicatesOrShuffles(int num, int duplicateOrShuffle)
+    private static void makeDuplicatesOrShuffles(RandomArray randomArray, int num, int duplicateOrShuffle)
     {
         while (num > 0)
         {
-            int firstIndex = random.nextInt(arraySize);
-            int secondIndex = random.nextInt(arraySize);
-            int firstElement = generatedArray[firstIndex];
+            Random random = randomArray.getRandom();
+            int firstIndex = random.nextInt(randomArray.getArraySize());
+            int secondIndex = random.nextInt(randomArray.getArraySize());
 
             switch (duplicateOrShuffle)
             {
                 case MAKE_DUPLICATE:
-                    generatedArray[secondIndex] = firstElement;
+                    randomArray.copyElementInArray(secondIndex, firstIndex);
                     break;
                 case MAKE_SHUFFLE:
-                    generatedArray[firstIndex] = generatedArray[secondIndex];
-                    generatedArray[secondIndex] = firstElement;
+                    randomArray.swapElementsPositionInArray(firstIndex, secondIndex);
             }
             num--;
         }
     }
 
-    public List<Integer> generate()
+    public static List<Integer> generate(RandomArray randomArray)
     {
-        generatedArray = new Integer[arraySize];
-        for (int i = 0;i < arraySize; i++)
+        int arraySize = randomArray.getArraySize();
+        randomArray.setGeneratedArray(new Integer[arraySize]);
+        for (int i = 0; i < arraySize; i++)
         {
-            generatedArray[i] = i + 1;
+            randomArray.addToGeneratedArray(i, i + 1);
         }
-        makeDuplicatesOrShuffles(sizeSqrt, MAKE_DUPLICATE);
+        makeDuplicatesOrShuffles(randomArray, randomArray.getSizeSqrt(), MAKE_DUPLICATE);
 
-        switch (patternType)
+        switch (randomArray.getActualPatternType())
         {
-            case PATTERN_REPEATED:
-                int num = (int) (0.75 * arraySize);
-                makeDuplicatesOrShuffles(num, MAKE_DUPLICATE);
+            case SortConstants.PATTERN_REPEATED:
+                int num = (int) (0.85 * arraySize);
+                makeDuplicatesOrShuffles(randomArray, num, MAKE_DUPLICATE);
                 break;
-            case PATTERN_REVERSE:
-                List<Integer> reverseList = Arrays.asList(generatedArray);
+            case SortConstants.PATTERN_REVERSE:
+                List<Integer> reverseList = Arrays.asList(randomArray.getGeneratedArray());
                 Collections.reverse(reverseList);
-                generatedArray = reverseList.toArray(new Integer[arraySize]);
-                makeDuplicatesOrShuffles(sizeSqrt, MAKE_SHUFFLE);
+                randomArray.setGeneratedArray(reverseList.toArray(new Integer[arraySize]));
+                makeDuplicatesOrShuffles(randomArray, randomArray.getSizeSqrt(), MAKE_SHUFFLE);
                 break;
-            case PATTERN_NEARLY_SORTED:
-                makeDuplicatesOrShuffles(sizeSqrt, MAKE_SHUFFLE);
+            case SortConstants.PATTERN_NEARLY_SORTED:
+                makeDuplicatesOrShuffles(randomArray, randomArray.getSizeSqrt(), MAKE_SHUFFLE);
                 break;
-            case PATTERN_RANDOM:
-                List<Integer> randomList = Arrays.asList(generatedArray);
+            case SortConstants.PATTERN_RANDOM:
+                List<Integer> randomList = Arrays.asList(randomArray.getGeneratedArray());
                 Collections.shuffle(randomList);
-                generatedArray = randomList.toArray(new Integer[arraySize]);
+                randomArray.setGeneratedArray(randomList.toArray(new Integer[arraySize]));
                 break;
         }
 
-        return Arrays.asList(generatedArray);
+        return Arrays.asList(randomArray.getGeneratedArray());
     }
 }
