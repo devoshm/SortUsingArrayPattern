@@ -2,7 +2,7 @@ package SortUtils;
 
 class MaxSort
 {
-    static void sort(String arr[], int arrLength)
+    static void sort(int arr[], int arrLength)
     {
         if (arrLength == 1)
         {
@@ -10,11 +10,10 @@ class MaxSort
         }
 
         int maxIndex = 0, i;
-        String swap;
+        int swap;
         for (i = 0; i < arrLength; i++)
         {
-            Sort.counter++;
-            if (Integer.parseInt(arr[i].split("\\.")[0]) > Integer.parseInt(arr[maxIndex].split("\\.")[0]))
+            if (arr[i] > arr[maxIndex])
             {
                 maxIndex = i;
             }

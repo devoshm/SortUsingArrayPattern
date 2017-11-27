@@ -1,5 +1,9 @@
 package GenerateData;
 
+import Init.SortConstants;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -8,11 +12,9 @@ public class RandomArray
     private int arraySize;
     private Random random;
     private int sizeSqrt;
-    private Integer[] generatedArray;
-    private Integer[] sortedArray;
+    private int[] generatedArray;
     private int actualPatternType;
-    private int predictedPatternType;
-    private Map<Integer, Integer> availablePatterns;
+    private Map<String, Object> reportMap = new HashMap<>();
 
     public RandomArray(int patternType, int arraySize)
     {
@@ -20,6 +22,10 @@ public class RandomArray
         this.actualPatternType = patternType;
         this.random = new Random();
         this.sizeSqrt = (int) Math.sqrt(arraySize);
+
+        addToReportMap(SortConstants.HEADER_DATETIME, LocalDateTime.now().toString());
+        addToReportMap(SortConstants.HEADER_ARRAY_SIZE, arraySize);
+        addToReportMap(SortConstants.HEADER_PATTERN, SortConstants.AVAILABLE_PATTERNS.get(patternType));
     }
 
     public int getArraySize()
@@ -27,12 +33,12 @@ public class RandomArray
         return arraySize;
     }
 
-    public Random getRandom()
+    Random getRandom()
     {
         return random;
     }
 
-    public int getSizeSqrt()
+    int getSizeSqrt()
     {
         return sizeSqrt;
     }
@@ -42,55 +48,45 @@ public class RandomArray
         return actualPatternType;
     }
 
-    public Map<Integer, Integer> getAvailablePatterns()
-    {
-        return availablePatterns;
-    }
-
-    public Integer getFromGeneratedArray(Integer index)
-    {
-        return generatedArray[index];
-    }
-
-    public Integer[] getGeneratedArray()
+    public int[] getGeneratedArray()
     {
         return generatedArray;
     }
 
-    public void swapElementsPositionInArray(int firstIndex, int secondIndex)
+    void setGeneratedArray(int[] generatedArray)
+    {
+        this.generatedArray = generatedArray;
+    }
+
+    void swapElementsPositionInArray(int firstIndex, int secondIndex)
     {
         int temp = this.generatedArray[firstIndex];
         this.generatedArray[firstIndex] = this.generatedArray[secondIndex];
         this.generatedArray[secondIndex] = temp;
     }
 
-    public void copyElementInArray(int toIndex, int fromIndex)
+    void copyElementInArray(int toIndex, int fromIndex)
     {
         this.generatedArray[toIndex] = this.generatedArray[fromIndex];
     }
 
-    public void addToGeneratedArray(int index, int value)
+    void addToGeneratedArray(int index, int value)
     {
         this.generatedArray[index] = value;
     }
 
-    public void setGeneratedArray(Integer[] generatedArray)
+    public Map<String, Object> getReportMap()
     {
-        this.generatedArray = generatedArray;
+        return reportMap;
     }
 
-    public int getPredictedPatternType()
+    public void addToReportMap(String key, Object value)
     {
-        return predictedPatternType;
+        this.reportMap.put(key, value);
     }
 
-    public void setPredictedPatternType(int predictedPatternType)
+    public int calculateLog(int base)
     {
-        this.predictedPatternType = predictedPatternType;
-    }
-
-    public int calculateLog(int num, int base)
-    {
-        return (int) Math.ceil(Math.log10(num)/Math.log10(base));
+        return (int) Math.ceil(Math.log10(arraySize) / Math.log10(base));
     }
 }

@@ -2,30 +2,30 @@ package SortUtils;
 
 class QuickSort
 {
-    private static int partition(String arr[], int low, int high)
+    private static int partition(int arr[], int low, int high)
     {
-        int pivot = Integer.parseInt(arr[high].split("\\.")[0]);
+        int pivot = arr[high];
         int i = (low - 1);
         for (int j = low; j < high; j++)
         {
-            if (Integer.parseInt(arr[j].split("\\.")[0]) <= pivot)
+            if (arr[j] <= pivot)
             {
                 i++;
 
-                String temp = arr[i];
+                int temp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = temp;
             }
         }
 
-        String temp = arr[i + 1];
+        int temp = arr[i + 1];
         arr[i + 1] = arr[high];
         arr[high] = temp;
 
         return i + 1;
     }
 
-    static void sort(String arr[], int low, int high)
+    static void sort(int arr[], int low, int high)
     {
         if (low < high)
         {
