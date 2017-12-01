@@ -119,16 +119,32 @@ class RandomSampling implements Sampling
         for (Integer index : randomIndices)
         {
             currValue = unsortedArray[index];
-            Integer valCount = uniqueArray.getOrDefault(currValue, 0);
-            if (valCount > 0)
+
+            if (uniqueArray.size() <= noOfSets && random.nextBoolean())
             {
-                if (valCount == 1)
+                double indexRange = (double) index / (double) randomThreshold;
+                int floorValRange = (int) Math.floor(indexRange);
+                lowerBound = randomThreshold * floorValRange;
+                upperBound = randomThreshold * (floorValRange + 1);
+
+                Integer valCount = uniqueArray.getOrDefault(currValue, 0);
+                for (int i = lowerBound; i < upperBound; i++)
                 {
-                    repeatCount++;
+                    if (unsortedArray[i] == currValue)
+                    {
+                        valCount++;
+                        if (valCount > 1)
+                        {
+                            if (valCount == 2)
+                            {
+                                repeatCount++;
+                            }
+                            repeatCount++;
+                        }
+                    }
                 }
-                repeatCount++;
+                uniqueArray.put(currValue, valCount);
             }
-            uniqueArray.put(currValue, ++valCount);
 
             if (prevValue != null)
             {
@@ -147,7 +163,7 @@ class RandomSampling implements Sampling
 
         Integer[] patterns = getPatterns(isAsc);
         doCountModification(predictionData, patterns, patternedArray);
-        predictionData.addToScoreMap(SortConstants.PATTERN_REPEATED, repeatCount);
+        predictionData.addToScoreMap(SortConstants.PATTERN_REPEATED, (repeatCount / uniqueArray.size()) * randomIndices.size());
         long endTime = System.nanoTime();
         predictionData.setTimeTaken(endTime - startTime);
     }
