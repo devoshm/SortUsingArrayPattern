@@ -111,6 +111,7 @@ class RandomSampling implements Sampling
             }
             lowerBound += randomThreshold;
         }
+        predictionData.setSampledSize(randomIndices.size());
 
         Boolean isAsc = null;
         Integer prevValue = null, currValue;
@@ -163,7 +164,8 @@ class RandomSampling implements Sampling
 
         Integer[] patterns = getPatterns(isAsc);
         doCountModification(predictionData, patterns, patternedArray);
-        predictionData.addToScoreMap(SortConstants.PATTERN_REPEATED, (repeatCount / uniqueArray.size()) * randomIndices.size());
+        System.out.println(uniqueArray);
+        predictionData.addToScoreMap(SortConstants.PATTERN_REPEATED, (int) (((double) repeatCount / (double) uniqueArray.size()) * randomIndices.size()));
         long endTime = System.nanoTime();
         predictionData.setTimeTaken(endTime - startTime);
     }

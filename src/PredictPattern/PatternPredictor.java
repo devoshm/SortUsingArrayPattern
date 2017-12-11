@@ -2,6 +2,7 @@ package PredictPattern;
 
 import GenerateData.RandomArray;
 import Init.SortConstants;
+import SortUtils.Sort;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class PatternPredictor
     {
         String predictorName;
         Map<Integer, Integer> scoreMap = new HashMap<>();
-        int predictedPattern, maxScore = 0;
+        int predictedPattern, sampledSize, maxScore = 0;
         long timeTaken, ttForActualSort, ttForPredictedSort;
 
         Predictor(String name)
@@ -94,6 +95,12 @@ public class PatternPredictor
         void setTimeTaken(long timeTaken)
         {
             this.timeTaken = timeTaken;
+
+            long actualTT = Sort.sort(randomArray.getGeneratedArray(), randomArray.getActualPatternType());
+            setTtForActualSort(actualTT);
+
+            long predictedTT = (randomArray.getActualPatternType() != this.predictedPattern) ? Sort.sort(randomArray.getGeneratedArray(), this.predictedPattern) : actualTT;
+            setTtForPredictedSort(predictedTT);
         }
 
         public long getTtForActualSort()
@@ -101,7 +108,7 @@ public class PatternPredictor
             return ttForActualSort;
         }
 
-        public void setTtForActualSort(long ttForActualSort)
+        void setTtForActualSort(long ttForActualSort)
         {
             this.ttForActualSort = ttForActualSort;
         }
@@ -111,9 +118,19 @@ public class PatternPredictor
             return ttForPredictedSort;
         }
 
-        public void setTtForPredictedSort(long ttForPredictedSort)
+        void setTtForPredictedSort(long ttForPredictedSort)
         {
             this.ttForPredictedSort = ttForPredictedSort;
+        }
+
+        public int getSampledSize()
+        {
+            return sampledSize;
+        }
+
+        public void setSampledSize(int sampledSize)
+        {
+            this.sampledSize = sampledSize;
         }
     }
 }

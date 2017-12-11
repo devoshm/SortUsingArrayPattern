@@ -34,6 +34,7 @@ public interface SortConstants
     String HEADER_PATTERN = "Actual Pattern";
     String HEADER_SCORE = " Score";
     String HEADER_PREDICTED = "Predicted Pattern";
+    String HEADER_SAMPLE_SIZE = "Sampled Size";
     String HEADER_TIME_TAKEN = "Time Taken";
     String HEADER_ACTUAL_SORT_TIME = "Sort Time With Actual Pattern";
     String HEADER_PREDICTED_SORT_TIME = "Sort Time With Predicted Pattern";
