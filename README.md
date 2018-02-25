@@ -1,3 +1,5 @@
+[![LICENSE](http://img.shields.io/:license-apache-brightgreen.svg)](https://github.com/devoshm/SortUsingArrayPattern/blob/master/LICENSE)
+
 # SortUsingArrayPattern
 
 An algorithm that figures out and analyses the pattern of an array and then go for the best sorting algorithm possible for the array.
